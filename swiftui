@@ -1,0 +1,75 @@
+import SwiftUI
+
+struct Product: Identifiable {
+    var id: Int
+    var name: String
+    var price: String
+    var image: String
+}
+
+struct ContentView: View {
+    let products: [Product] = [
+        Product(id: 1, name: "Product 1", price: "$100", image: "product1"),
+        Product(id: 2, name: "Product 2", price: "$150", image: "product2"),
+        // Add more products here
+    ]
+    
+    var body: some View {
+        NavigationView {
+            List(products) { product in
+                NavigationLink(destination: ProductDetail(product: product)) {
+                    ProductRow(product: product)
+                }
+            }
+            .navigationTitle("EC Demo App")
+        }
+    }
+}
+
+struct ProductRow: View {
+    let product: Product
+    
+    var body: some View {
+        HStack {
+            Image(product.image)
+                .resizable()
+                .frame(width: 80, height: 80)
+            VStack(alignment: .leading) {
+                Text(product.name)
+                    .font(.headline)
+                Text(product.price)
+                    .foregroundColor(.secondary)
+            }
+        }
+    }
+}
+
+struct ProductDetail: View {
+    let product: Product
+    
+    var body: some View {
+        VStack {
+            Image(product.image)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(height: 200)
+            Text(product.name)
+                .font(.title)
+                .padding()
+            Text(product.price)
+                .font(.headline)
+                .foregroundColor(.secondary)
+            Spacer()
+        }
+        .navigationTitle(product.name)
+    }
+}
+
+@main
+struct ECApp: App {
+    var body: some Scene {
+        WindowGroup {
+            ContentView()
+        }
+    }
+}
